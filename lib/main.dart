@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hawalnir1/src/view_models/app_key.dart';
+import '/src/view_models/app_key.dart';
 import 'package:provider/provider.dart';
 import 'src/app.dart';
 
@@ -21,12 +21,12 @@ void main() {
         ),
 
         fontFamily: 'NotoSansArabic',
-        tabBarTheme: TabBarTheme(),
-        iconTheme: IconThemeData(),
+        tabBarTheme: const TabBarTheme(),
+        iconTheme: const IconThemeData(),
       ),
-      home: HawalnirHome(),
+      home: const HawalnirHome(),
       initialRoute: '/',
-      routes: <String, WidgetBuilder>{},
+      routes: const <String, WidgetBuilder>{},
     ),
   ));
 }

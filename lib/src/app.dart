@@ -7,14 +7,16 @@ import 'package:provider/provider.dart' as provider;
 
 import '../wordpress_client.dart';
 import 'config.dart';
-import 'pages/listView.dart';
+import 'pages/list_view.dart';
 import 'view_models/app_key.dart';
 import 'widgets/drawerMain.dart';
 
-WordpressClient client = new WordpressClient(_baseUrl, http.Client());
+WordpressClient client = WordpressClient(_baseUrl, http.Client());
 final String _baseUrl = mainApiUrl;
 
 class HawalnirHome extends StatefulWidget {
+  const HawalnirHome({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => HawalnirHomeState();
 }
@@ -40,7 +42,7 @@ class HawalnirHomeState extends State<HawalnirHome>
 
               return snapshot.hasData
                   ? ListViewPosts(posts: snapshot.data)
-                  : Center(child: CircularProgressIndicator());
+                  : const Center(child: CircularProgressIndicator());
             },
           ),
         ),
@@ -50,7 +52,7 @@ class HawalnirHomeState extends State<HawalnirHome>
 
   bottomNavAppBar() {
     return ClipRect(
-      child: Container(
+      child: SizedBox(
         height: 80,
         child: Stack(
           children: <Widget>[
@@ -59,7 +61,7 @@ class HawalnirHomeState extends State<HawalnirHome>
               child: BottomNavigationBar(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  items: [
+                  items: const [
                     BottomNavigationBarItem(
                         label: 'Home', icon: Icon(Icons.home)),
                     BottomNavigationBarItem(

@@ -4,9 +4,9 @@ import 'dart:async';
 import '../config.dart';
 import '../db/database_helper.dart';
 import 'dart:io';
-import 'package:hawalnir1/wordpress_client.dart';
+import '/wordpress_client.dart';
 
-WordpressClient client = new WordpressClient(_baseUrl, http.Client());
+WordpressClient client = WordpressClient(_baseUrl, http.Client());
 final String _baseUrl = mainApiUrl;
 
 var dbHelper = DatabaseHelper();
@@ -69,9 +69,8 @@ doWeHaveNet() async {
 
 Future<List<Post>?> getPosts() async {
   posts = await client.listPosts(perPage: perPageInt, injectObjects: true);
-  return posts ;
+  return posts;
 }
-
 
 Future<List<Post>?> isExitst() async {
   doWeHaveNet();
@@ -92,12 +91,11 @@ Future<List<Post>?> isExitst() async {
   debugPrint('Posts Ids are: ' + postsIDs.toString());
   debugPrint('Cached pOsts ids are : ' + cachedPostsIDs.toString());
 
-  if (cachedPosts!.length < 1) {
+  if (cachedPosts!.isEmpty) {
     debugPrint('No Cached Posts Has Been FOUND');
     posts = await client.listPosts(perPage: perPageInt, injectObjects: true);
     fillDB();
-    return posts ;
-
+    return posts;
   } else {
     for (int i = 0; i < cachedPostsIDs.length; i++) {
       for (int j = 0; j < postsIDs.length; j++) {

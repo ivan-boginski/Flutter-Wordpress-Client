@@ -1,6 +1,8 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:hawalnir1/src/app.dart';
-import 'package:hawalnir1/src/models/category.dart';
+import '/src/app.dart';
+import '/src/models/category.dart';
 
 import '../../wordpress_client.dart';
 

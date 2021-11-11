@@ -10,13 +10,14 @@ import 'models/media.dart';
 import 'models/post.dart';
 import 'models/users.dart';
 
-typedef void APIErrorHandler(String endpoint, int statusCode, String response);
+typedef APIErrorHandler = void Function(
+    String endpoint, int statusCode, String response);
 
 class WordpressClient {
-  final Logger _logger = new Logger('API');
-  String _baseURL;
-  Client _client;
-  APIErrorHandler? _errorHandler;
+  final Logger _logger = Logger('API');
+  final String _baseURL;
+  final Client _client;
+  final APIErrorHandler? _errorHandler;
 
   WordpressClient(this._baseURL, this._client, [this._errorHandler]);
 
@@ -25,7 +26,7 @@ class WordpressClient {
   /// If [hideEmpty] is false then ALL categories will be returned, and
   /// [excludeIDs] can be used to ignore specific category IDs
   Future<List<Category>> listCategories(
-      {bool hideEmpty: true, List<int>? excludeIDs}) async {
+      {bool hideEmpty = true, List<int>? excludeIDs}) async {
     String _endpoint = '/wp/v2/categories';
 
     // Build query string
@@ -33,7 +34,7 @@ class WordpressClient {
     if (hideEmpty) {
       queryString = _addParamToQueryString(queryString, 'hide_empty', 'true');
     }
-    if (excludeIDs != null && excludeIDs.length > 0) {
+    if (excludeIDs != null && excludeIDs.isNotEmpty) {
       queryString =
           _addParamToQueryString(queryString, 'exclude', excludeIDs.join(','));
     }
@@ -62,10 +63,10 @@ class WordpressClient {
   /// and [perPage] parameters allow for pagination.
   Future<List<Post>> listPosts(
       {List<int>? categoryIDs,
-      bool injectObjects: false,
+      bool injectObjects = false,
       List<int>? excludeIDs,
-      int page: 1,
-      int perPage: 10}) async {
+      int page = 1,
+      int perPage = 10}) async {
     String _endpoint = '/wp/v2/posts?_embed';
     print(_endpoint);
 
@@ -74,13 +75,13 @@ class WordpressClient {
     queryString = _addParamToQueryString(queryString, 'page', page.toString());
 
     // If category IDs were sent, limit to those
-    if (categoryIDs != null && categoryIDs.length > 0) {
+    if (categoryIDs != null && categoryIDs.isNotEmpty) {
       queryString = _addParamToQueryString(
           queryString, 'categories', categoryIDs.join(','));
     }
 
     // Exclude posts?
-    if (excludeIDs != null && excludeIDs.length > 0) {
+    if (excludeIDs != null && excludeIDs.isNotEmpty) {
       queryString =
           _addParamToQueryString(queryString, 'exclude', excludeIDs.join(','));
     }
@@ -95,7 +96,7 @@ class WordpressClient {
 
     List<Post> posts = [];
     posts = postMaps
-        .map((postMap) => new Post.fromMap(postMap as Map<String, dynamic>))
+        .map((postMap) => Post.fromMap(postMap as Map<String, dynamic>))
         .toList();
     //print(posts.toString()) ;
     // Inject objects if requested
@@ -115,7 +116,7 @@ class WordpressClient {
   /// If [mediaIDs] list is provided then only these specific media items
   /// will be returned. The [page] and [perPage] parameters allow for pagination.
   Future<List<Media>> listMedia(
-      {List<int>? includeIDs, int page: 1, perPage: 10}) async {
+      {List<int>? includeIDs, int page = 1, perPage: 10}) async {
     String _endpoint = '/wp/v2/media';
 
     // Build query string starting with pagination
@@ -125,7 +126,7 @@ class WordpressClient {
         _addParamToQueryString(queryString, 'per_page', perPage.toString());
 
     // Requesting specific items
-    if (includeIDs != null && includeIDs.length > 0) {
+    if (includeIDs != null && includeIDs.isNotEmpty) {
       queryString =
           _addParamToQueryString(queryString, 'include', includeIDs.join(','));
     }
@@ -139,7 +140,7 @@ class WordpressClient {
 
     List<Media> media = [];
     media = mediaMaps
-        .map((mediaMap) => new Media.fromMap(mediaMap as Map<String, dynamic>))
+        .map((mediaMap) => Media.fromMap(mediaMap as Map<String, dynamic>))
         .toList();
 
     return media;
@@ -162,7 +163,7 @@ class WordpressClient {
   }
   */
   Future<List<User>> listUser(
-      {List<int>? includeIDs, int page: 1, int perPage: 10}) async {
+      {List<int>? includeIDs, int page = 1, int perPage = 10}) async {
     String _endpoint = '/wp/v2/users';
 
     // // Build query string starting with pagination
@@ -196,7 +197,7 @@ class WordpressClient {
   }
 
   /// Get post
-  Future<Post?> getPost(int? postID, {bool injectObjects: true}) async {
+  Future<Post?> getPost(int? postID, {bool injectObjects = true}) async {
     if (postID == null) {
       return null;
     }
@@ -209,7 +210,7 @@ class WordpressClient {
       return null;
     }
 
-    Post p = new Post.fromMap(postMap as Map<String, dynamic>);
+    Post p = Post.fromMap(postMap as Map<String, dynamic>);
 
     // Inject objects if requested
 //    if (injectObjects) {
@@ -235,7 +236,7 @@ class WordpressClient {
       return null;
     }
 
-    return new Media.fromMap(mediaMap as Map<String, dynamic>);
+    return Media.fromMap(mediaMap as Map<String, dynamic>);
   }
 
   /// Get media item
@@ -252,7 +253,7 @@ class WordpressClient {
       return null;
     }
 
-    return new Media.fromMap(mediaMap as Map<String, dynamic>);
+    return Media.fromMap(mediaMap as Map<String, dynamic>);
   }
 
   /// Get User item
@@ -269,7 +270,7 @@ class WordpressClient {
       return null;
     }
 
-    return new User.fromMap(userMap);
+    return User.fromMap(userMap);
   }
 
   _handleError(String endpoint, int statusCode, String response) {
@@ -312,11 +313,12 @@ class WordpressClient {
   }
 
   String _addParamToQueryString(String? queryString, String key, String value) {
-    if (queryString == null) {
-      queryString = '';
-    }
+    queryString ??= '';
+    // if (queryString == null) {
+    //   queryString = '';
+    // }
 
-    if (queryString.length == 0) {
+    if (queryString.isEmpty) {
       queryString += '?';
     } else {
       queryString += '&';

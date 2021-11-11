@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class BottomBar extends StatelessWidget {
-  BottomBar({
+  const BottomBar({
+    Key? key,
     required this.currentIndex,
     required this.onTap,
     required this.items,
-}
-);
+  }) : super(key: key);
 
   final int currentIndex;
   final ValueChanged<int> onTap;

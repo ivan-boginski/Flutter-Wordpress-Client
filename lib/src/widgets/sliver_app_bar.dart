@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:hawalnir1/src/view_models/app_key.dart';
+import '/src/view_models/app_key.dart';
 import 'package:provider/provider.dart' as provider;
 
-import '../pages/listView.dart';
+import '../pages/list_view.dart';
 
 class SliverAppBarCustomized extends StatelessWidget {
   const SliverAppBarCustomized({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class SliverAppBarCustomized extends StatelessWidget {
       pinned: true,
       expandedHeight: 60.0,
       leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.menu,
           ),
           onPressed: () => provider.Provider.of<Keys>(context, listen: false)
@@ -33,7 +33,7 @@ class SliverAppBarCustomized extends StatelessWidget {
             title: GestureDetector(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
-                child: Text(
+                child: const Text(
                   'Flutter-Wordpress-Client',
                   style: TextStyle(fontSize: 16),
                 ),

@@ -1,20 +1,14 @@
+// ignore_for_file: file_names
+
 import 'package:intl/intl.dart';
 
-
 dynamic dateConvertor(String value) {
-   
-   //value= "hello";
+  //value= "hello";
   String convertedValue;
-   
 
-     
-    convertedValue = 
-    DateFormat('y/M/d   H:m')
-     .format(DateTime.parse(value));
-   
-   return  convertedValue;
-     
-    
+  convertedValue = DateFormat('y/M/d   H:m').format(DateTime.parse(value));
+
+  return convertedValue;
 }
    
     //if (!value.contains('@')) {
